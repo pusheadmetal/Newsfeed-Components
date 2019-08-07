@@ -112,3 +112,105 @@ const data = [
   Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new artible
 
 */
+window.addEventListener("load", function(event){
+
+  let articlesDiv = document.querySelector(".articles");
+
+  
+
+  //Add a new article to the array
+    //Create a class
+      class CreateArticleData {
+        constructor(attributes){
+          this.title = attributes.title;
+          this.date = attributes.date;
+          this.firstParagraph = attributes.firstParagraph;
+          this.secondParagraph = attributes.secondParagraph;
+          this.thirdParagraph = attributes.thirdParagraph;
+        }
+        addToArray(){
+          data.push(this);
+        }
+      }
+    
+    //Create an object
+      const urkel = new CreateArticleData ({
+        title: "Steve Urkel: The Modern Day Einstein",
+        date: "Sept. 6th, 1993",
+        firstParagraph: "Steve Urkel is an absolute nerd. But within that nerdom lies the seed of what, perhaps, may save humanity (but not Carl Winslow's coffee table). With Mr. Urkel's superior intellect, he has managed to create machines that can stamp out world hunger and solve all of our transportation issues. Think I'm joking? Read on!",
+        secondParagraph: "I had a chance to catch up with Mr. Urkel over a fine crock of his Grandmother's famous Beaver Stew (Mmm...! Whisker!). His demonstration began once I mentioned that I wished there was some stew left over for me to bring home. Noticing that he had only one serving left, which he was saving for his dear girlfriend, Myra, he quickly snatched it up and beckoned me to follow. What I would see next would change my life forever.",
+        thirdParagraph: "We sauntered into Mr. Winslow's garage where there stood a juggernaut. Within its impressive, chrome finish were two chambers, one of which contained the crock of Beaver Stew Mr. Urkel had been carrying with him after he carefully placed it inside. Flipping a massive switch, a flash of light blinded my eyes and my ears were filled with a loud humming, matching the amplification of my beating heart. Once the humming stopped and the light dimmed, not one, but both chambers now contained Beaver Stew! Mr. Urkel had invented a cloning machine!",
+      });
+
+    //Add to array
+      urkel.addToArray();
+
+  //Get New Articles
+
+    let newArticles = data.map( (item) => {
+      let newArticle = createArticle(item);
+
+      return newArticle;
+    });
+
+  //Add Articles to DOM
+
+    newArticles.forEach( (item) => {
+      articlesDiv.appendChild(item);
+    } );
+
+  function createArticle (obj) {
+
+    //Create Elements
+      let articleDiv = document.createElement("div");
+      let newH2 = document.createElement("h2");
+      let p = [];
+      for (let i = 0; i < data.length; i++){
+        p.push(document.createElement("p"));
+      }
+      let newSpan = document.createElement("span");
+      let newExpandButton = document.createElement("button");
+      let newCloseButton = document.createElement("button");
+
+    //Create Nodes
+      let newH2TextNode = document.createTextNode(obj.title);
+      let newP1TextNode = document.createTextNode(obj.date);
+      let newP2TextNode = document.createTextNode(obj.firstParagraph);
+      let newP3TextNode = document.createTextNode(obj.secondParagraph);
+      let newP4TextNode = document.createTextNode(obj.thirdParagraph);
+      let newExpandButtonText = document.createTextNode("Expand");
+      let newCloseButtonText = document.createTextNode("Close");
+
+    //Add/Toggle Classes
+
+      articleDiv.classList.add("article");
+      p[0].classList.add("date");
+      newSpan.classList.add("expandButton");
+      newExpandButton.addEventListener("click", function(e){
+        articleDiv.classList.toggle("article-open");
+      });
+      newCloseButton.addEventListener("click", function(e){
+        articleDiv.style.display = "none";
+      });
+
+    //Append
+      newH2.appendChild(newH2TextNode);
+      p[0].appendChild(newP1TextNode);
+      p[1].appendChild(newP2TextNode);
+      p[2].appendChild(newP3TextNode);
+      p[3].appendChild(newP4TextNode);
+
+      articleDiv.appendChild(newH2);
+      for (i = 0; i < p.length; i++){
+        articleDiv.appendChild(p[i]);
+      }
+      newExpandButton.appendChild(newExpandButtonText);
+      newCloseButton.appendChild(newCloseButtonText);
+      newSpan.appendChild(newExpandButton);
+      newSpan.appendChild(newCloseButton);
+      articleDiv.appendChild(newSpan);
+
+    //Return
+      return articleDiv;
+  }
+})
